@@ -34,10 +34,15 @@ func (r *SQLiteAccountRepo) GetByDocument(doc string) (*domain.Account, error) {
 	acc := &domain.Account{}
 	query := `SELECT id, document_number FROM accounts WHERE document_number = ?`
 	err := r.db.QueryRow(query, doc).Scan(&acc.ID, &acc.DocumentNumber)
-	if errors.Is(err, sql.ErrNoRows) {
-		return nil, domain.ErrAccountNotFound
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, domain.ErrAccountNotFound
+		}
+		return nil, err
 	}
-	return acc, err
+
+	return acc, nil
 }
 
 type SQLiteOperationRepo struct {

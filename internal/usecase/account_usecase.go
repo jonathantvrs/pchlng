@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"errors"
+
 	"github.com/jonathantvrs/pismo/internal/domain"
 )
 
@@ -13,7 +15,11 @@ func NewAccountUseCase(r domain.AccountRepository) *AccountUseCase {
 }
 
 func (uc *AccountUseCase) Create(documentNumber string) (*domain.Account, error) {
-	existing, _ := uc.repo.GetByDocument(documentNumber)
+	existing, err := uc.repo.GetByDocument(documentNumber)
+	if err != nil && !errors.Is(err, domain.ErrAccountNotFound) {
+		return nil, err
+	}
+
 	if existing != nil {
 		return nil, domain.ErrDocumentAlreadyExists
 	}
@@ -22,6 +28,7 @@ func (uc *AccountUseCase) Create(documentNumber string) (*domain.Account, error)
 	if err := uc.repo.Create(acc); err != nil {
 		return nil, err
 	}
+
 	return acc, nil
 }
 

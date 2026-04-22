@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"errors"
 	"sync"
 
 	"github.com/jonathantvrs/pismo/internal/domain"
@@ -36,7 +35,7 @@ func (r *AccountMemoryRepo) GetByDocument(doc string) (*domain.Account, error) {
 	defer r.mu.RUnlock()
 	id, exists := r.docIndex[doc]
 	if !exists {
-		return nil, errors.New("account not found")
+		return nil, domain.ErrAccountNotFound
 	}
 	return r.accounts[id], nil
 }
@@ -47,7 +46,7 @@ func (r *AccountMemoryRepo) GetByID(id int) (*domain.Account, error) {
 	if acc, exists := r.accounts[id]; exists {
 		return acc, nil
 	}
-	return nil, errors.New("account not found")
+	return nil, domain.ErrAccountNotFound
 }
 
 type OperationMemoryRepo struct {
@@ -72,7 +71,7 @@ func (r *OperationMemoryRepo) GetByID(id int) (*domain.OperationType, error) {
 	if op, exists := r.ops[id]; exists {
 		return op, nil
 	}
-	return nil, errors.New("operation type not found")
+	return nil, domain.ErrInvalidOperation
 }
 
 type TransactionMemoryRepo struct {
