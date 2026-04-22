@@ -1,0 +1,59 @@
+@baseUrl = http://localhost:8080
+@accounts = /accounts
+@transactions = /transactions
+
+### Accounts
+
+### 1. Criar uma Conta
+POST {{baseUrl}}{{accounts}}
+Content-Type: application/json
+
+{
+  "document_number": "12345678900"
+}
+
+### 2. Consultar Conta
+GET {{baseUrl}}{{accounts}}/1
+
+
+### Transactions
+
+### 3. Criar uma Transação (Compra a Vista: Tipo 1 - negativo)
+POST {{baseUrl}}{{transactions}}
+Content-Type: application/json
+
+{
+  "account_id": 1,
+  "operation_type_id": 1,
+  "amount": 50.00
+}
+
+### 4. Criar uma Transação (Compra Parcelada: Tipo 2 - negativo)
+POST {{baseUrl}}{{transactions}}
+Content-Type: application/json
+
+{
+  "account_id": 1,
+  "operation_type_id": 2,
+  "amount": 150.50
+}
+
+### 5. Criar uma Transação (Saque: Tipo 3 - negativo)
+POST {{baseUrl}}{{transactions}}
+Content-Type: application/json
+
+{
+  "account_id": 1,
+  "operation_type_id": 3,
+  "amount": 200.00
+}
+
+### 6. Criar uma Transação (Pagamento: Tipo 4 - positivo)
+POST {{baseUrl}}{{transactions}}
+Content-Type: application/json
+
+{
+  "account_id": 1,
+  "operation_type_id": 4,
+  "amount": 100.00
+}
