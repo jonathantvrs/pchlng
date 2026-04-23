@@ -1,6 +1,8 @@
 package main
 
 import (
+	"database/sql"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/jonathantvrs/pismo/docs"
 	"github.com/jonathantvrs/pismo/internal/handler"
@@ -10,16 +12,10 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func initDependencies() (accHandler *handler.AccountHandler, txHandler *handler.TransactionHandler) {
+func initDependencies(db *sql.DB) (accHandler *handler.AccountHandler, txHandler *handler.TransactionHandler) {
 	//txRepo := repository.NewTransactionMemoryRepo()
 	//accRepo := repository.NewAccountMemoryRepo()
 	//opTypeRepo := repository.NewOperationMemoryRepo()
-
-	db, err := repository.InitSQLiteDB("transactions.db")
-	if err != nil {
-		panic(err)
-	}
-	defer db.Close()
 
 	accRepo := repository.NewSQLiteAccountRepo(db)
 	txRepo := repository.NewSQLiteTransactionRepo(db)
@@ -35,7 +31,13 @@ func initDependencies() (accHandler *handler.AccountHandler, txHandler *handler.
 }
 
 func main() {
-	accHandler, txHandler := initDependencies()
+	db, err := repository.InitSQLiteDB("./transactions.db")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	accHandler, txHandler := initDependencies(db)
 
 	r := gin.Default()
 
