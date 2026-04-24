@@ -25,14 +25,14 @@ func InitSQLiteDB(filepath string) (*sql.DB, error) {
 	CREATE TABLE IF NOT EXISTS operation_types (
 		id INTEGER PRIMARY KEY,
 		description TEXT NOT NULL,
-		multiplier REAL NOT NULL
+		multiplier INTEGER NOT NULL
 	);
 
 	CREATE TABLE IF NOT EXISTS transactions (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		account_id INTEGER NOT NULL,
 		operation_type_id INTEGER NOT NULL,
-		amount REAL NOT NULL,
+		amount INTEGER NOT NULL,
 		event_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY(account_id) REFERENCES accounts(id),
 		FOREIGN KEY(operation_type_id) REFERENCES operation_types(id)

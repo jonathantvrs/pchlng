@@ -10,14 +10,14 @@ type Account struct {
 type OperationType struct {
 	ID          int
 	Description string
-	Multiplier  float64
+	Multiplier  int64
 }
 
 type Transaction struct {
 	ID              int       `json:"transaction_id"`
 	AccountID       int       `json:"account_id"`
 	OperationTypeID int       `json:"operation_type_id"`
-	Amount          float64   `json:"amount"`
+	Amount          int64     `json:"amount"`
 	EventDate       time.Time `json:"event_date"`
 }
 

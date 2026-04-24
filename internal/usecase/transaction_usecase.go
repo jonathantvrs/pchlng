@@ -1,10 +1,10 @@
 package usecase
 
 import (
-	"math"
 	"time"
 
 	"github.com/jonathantvrs/pismo/internal/domain"
+	"github.com/jonathantvrs/pismo/pkg/abs"
 )
 
 type TransactionUseCase struct {
@@ -20,7 +20,7 @@ func NewTransactionUseCase(
 	return &TransactionUseCase{txRepo: tr, accRepo: ar, opRepo: or}
 }
 
-func (uc *TransactionUseCase) Create(accountID, opTypeID int, amount float64) (*domain.Transaction, error) {
+func (uc *TransactionUseCase) Create(accountID, opTypeID int, amount int64) (*domain.Transaction, error) {
 	if _, err := uc.accRepo.GetByID(accountID); err != nil {
 		return nil, domain.ErrAccountNotFound
 	}
@@ -30,7 +30,7 @@ func (uc *TransactionUseCase) Create(accountID, opTypeID int, amount float64) (*
 		return nil, domain.ErrInvalidOperation
 	}
 
-	finalAmount := math.Abs(amount) * opType.Multiplier
+	finalAmount := abs.Abs(amount) * opType.Multiplier
 
 	tx := &domain.Transaction{
 		AccountID:       accountID,
