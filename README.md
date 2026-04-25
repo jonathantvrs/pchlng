@@ -12,7 +12,7 @@ API RESTful desenvolvida em Go para gerenciamento de contas e transações finan
 ## Executar via Docker
 
 ```bash
-git clone [https://github.com/jonathantvrs/pismo.git](https://github.com/jonathantvrs/pismo.git)
-cd pismo
+git clone https://github.com/jonathantvrs/pchlng.git
+cd pchlng
 docker-compose up --build
 ```
